@@ -1,0 +1,65 @@
+• Votre programme doit pouvoir gérer les épreuves suivantes :
+- Le 100 m
+- Le 400 m
+- Le 5000 m
+- Le marathon
+- Le relais 4*400 m
+Pour éviter de démultiplier les épreuves, votre programme permettra de gérer
+uniquement des sportives ou des sportifs (un seul genre).
+• Les différentes performances d’un athlète seront stockées dans un unique
+fichier qui portera le nom du sportif. Nous aurons donc un fichier  une
+personne. Vous pouvez utiliser des noms de personnes existantes (sportives
+ou non) ou bien en inventer.
+• Dans un fichier lié à un sportif sera indiqué les différents entrainements et
+performances à ces entrainements. Un entrainement correspondra à une
+ligne dans le fichier. Les informations stockées doivent être à minima :
+- La date de l’entrainement
+- Le type d’épreuve
+- Le temps de l’athlète à cet entrainement.
+Vous déciderez de la manière dont vous stockerez ces valeurs-là. Elles ne
+doivent pas forcément être lisibles humainement entre deux exécutions,
+mais votre programme doit pouvoir les récupérer et les traiter.
+• Cas particulier du relais : une épreuve de relais implique 4 personnes. Afin de
+pouvoir stocker les infos des participant et connaitre le déroulement de
+l’épreuve, une ligne d’informations dans un fichier concernant un
+entrainement de relais indiquera également, en plus des autres informations,
+la position de l’athlète pendant le relais. De plus, il ne peut y avoir qu’un seul
+entrainement de relais par jour. Ainsi en connaissant la date de
+l’entrainement vous pouvez retrouver le déroulement complet de
+l’entrainement du relais.
+• Lors de l’exécution du programme, un entraineur doit pouvoir :
+- Entrer et sauvegarder les informations/résultats d’un nouvel
+entrainement
+- Consulter l’historique des entrainements : par athlète et/ou par épreuve
+et/ou par date.
+- Consulter des statistiques de performances de chaque athlète.
+• Statistiques sur les athlètes : l’entraineur doit pouvoir consulter
+- Un résumé des performances d’un athlète : le meilleur, le pire temps et
+la moyenne d’un athlète pour une épreuve donnée.
+- Qui envoyer au JO : quels sont les trois meilleurs athlètes pour une
+discipline (meilleurs temps moyen).
+- Progression de l’athlète : afficher la différence de temps d’un athlète
+pour une même épreuve entre deux dates.
+• L’évolution des performances : afin de pouvoir observer la progression des
+athlètes, on aimerait pouvoir indiquer la différence de temps pour une même
+épreuve entre deux entrainements (entre deux dates).
+• Amélioration possible :
+- (Difficile) pour mieux voir les progrès d’un athlète calculer la régression
+linéaire (équation de droite) de l’évolution d’une performance (temps
+réalisé lors de l’épreuve) en fonction de la date de l’épreuve. Pour cela,
+nous vous conseillons d’utiliser la méthode des moindres carrés (voir
+ressources utiles).
+- Lors de l’affichage de l’historique, l’entraineur peut choisir dans quel
+ordre afficher les information (par date, ordre alphabétique de joueur
+etc.)
+- Rajout d’épreuve.
+- D’autre améliorations de votre choix peuvent être apportées !
+RESSOURCES
+UTILES
+Github
+• www.github.com
+• https://docs.github.com/en/get-started/quickstart/hello-world
+Modification des couleurs (polices et fond) dans le terminal
+• http://sdz.tdct.org/sdz/des-couleurs-dans-la-console-linux.html
+Régression linéaire
+• https://fr.wikipedia.org/wiki/R%C3%A9gression_lin%C3%A9aire
