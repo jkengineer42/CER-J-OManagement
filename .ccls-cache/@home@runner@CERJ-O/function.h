@@ -16,7 +16,6 @@ void centerText(const char* text) {
     printf("%s\n", text);
 }
 
-
 void show_athlete_stats(Athlete athletes[], int athlete_count) {
     int search_choice;
     char search_name[MAX_NAME] = "";
@@ -56,6 +55,7 @@ void show_athlete_stats(Athlete athletes[], int athlete_count) {
             int event_choice;
             printf("Entrez le numéro correspondant au type d'épreuve: ");
             scanf("%d", &event_choice);
+            getchar();  // consume newline
             if (event_choice >= 1 && event_choice <= num_event_types) {
                 strcpy(search_event, event_types[event_choice - 1]);
                 view_performance_history(athletes, athlete_count, NULL, NULL, search_event);
@@ -96,15 +96,20 @@ void view_performance_history(const Athlete *athletes, int athlete_count, const 
 
             printf("%-12s %-20s %-8.2f \n", perf->date, perf->epreuve, perf->time);
             if (perf->relay_position != 0) {
-                printf("%-15d\n", perf->relay_position);
+                printf("%-15d", perf->relay_position);
             } else {
-                printf("%-15s\n", "N/A");
+                printf("%-15s", "N/A");
             }
         }
     }
 
     if (!found) {
-        printf("Aucune performance trouvée pour les critères spécifiés.\n\n");
+        if (search_event != NULL && strlen(search_event) > 0) {
+            printf("Aucune performance trouvée pour le type d'épreuve spécifié.\n\n");
+        } else {
+            printf("Aucune performance trouvée pour les critères spécifiés.\n\n");
+        }
+        system_clear();
     }
 }
 
@@ -127,7 +132,7 @@ void add_new_athlete(Athlete athletes[], int *athlete_count) {
     athletes[*athlete_count].performance_count = 0;
     save_athlete_to_file(&athletes[*athlete_count]);
     (*athlete_count)++;
-    centerText("\nL'Athlète à bien été ajouté !\n\n");
+    system_clear();
 }
 
 void add_performance(const char *athlete_name, Athlete athletes[], int athlete_count) {
@@ -193,11 +198,13 @@ void add_performance(const char *athlete_name, Athlete athletes[], int athlete_c
 
             add_performance_to_athlete(&athletes[i], &new_performance);
             save_athlete_to_file(&athletes[i]);
-            centerText("\nPerformance mise à jour !\n\n");
+            printf("\nPerformance mise à jour !\n\n");
+            system_clear();
             return;
         }
     }
     printf("Athlète %s non trouvé.\n\n", athlete_name);
+    system_clear();
 }
 bool is_valid_time(const char *input) {
     int dot_count = 0;
@@ -213,9 +220,6 @@ bool is_valid_time(const char *input) {
     }
     return true;
 }
-
-
-
 
 bool is_valid_event_type(const char *event_type) {
     const char *valid_event_types[] = {"100m", "400m", "5000m", "marathon", "relais 4*400 m"};
@@ -280,17 +284,29 @@ bool is_valid_relay_position(int position) {
 void save_athlete_to_file(const Athlete *athlete) {
     char file_name[FILE_NAME_LEN];
     snprintf(file_name, FILE_NAME_LEN, "%s.txt", athlete->name);
-    FILE *file = fopen(file_name, "w");
+
+    // Se renseigne si l'athlète existe déjà ou non
+    FILE *file = fopen(file_name, "r");
+    if (file != NULL) {
+        fclose(file);
+        printf("Un fichier pour l'athlète %s existe déjà. Enregistrement annulé.\n", athlete->name);
+        return;
+    }
+
+    // Creer un nouveau fichier atlhète
+    file = fopen(file_name, "w");
     if (file == NULL) {
         perror("Erreur lors de l'ouverture du fichier");
         return;
     }
+
     fprintf(file, "%s\n%d\n", athlete->name, athlete->performance_count);
     for (int i = 0; i < athlete->performance_count; i++) {
         fprintf(file, "%s %s %f %d\n", athlete->performances[i].date, athlete->performances[i].epreuve,
                 athlete->performances[i].time, athlete->performances[i].relay_position);
     }
     fclose(file);
+    printf("l'Athlète %s à bien été ajouté !\n", athlete->name);
 }
 
 void load_athlete_from_file(Athlete *athlete, const char *file_name) {
@@ -316,51 +332,101 @@ void add_performance_to_athlete(Athlete *athlete, const Performance *performance
         athlete->performance_count++;
     } else {
         printf("Nombre maximum de performances atteint pour %s.\n\n", athlete->name);
+        system_clear();
     }
 }
 
-void display_best_performers(const Athlete athletes[], int athlete_count) {
-    if (athlete_count == 0) {
-        printf("Aucun athlète disponible.\n\n");
-        return;
+void compare_performance(const Athlete *athlete, const char *event, const char *date1, const char *date2) {
+    float time1 = -1;
+    float time2 = -1;
+
+    for (int i = 0; i < athlete->performance_count; i++) {
+        if (strcmp(athlete->performances[i].epreuve, event) == 0) {
+            if (strcmp(athlete->performances[i].date, date1) == 0) {
+                time1 = athlete->performances[i].time;
+            } else if (strcmp(athlete->performances[i].date, date2) == 0) {
+                time2 = athlete->performances[i].time;
+            }
+        }
     }
 
-    const char *event_types[] = {"100m", "400m", "5000m", "marathon", "relais 4*400 m"};
-    size_t num_event_types = sizeof(event_types) / sizeof(event_types[0]);
-
-    Performance best_performances[num_event_types];
-    Athlete *best_athletes[num_event_types];
-
-    for (size_t i = 0; i < num_event_types; i++) {
-        best_athletes[i] = NULL;
+    if (time1 != -1 && time2 != -1) {
+        printf("Différence de performance pour %s entre %s et %s: %.2f secondes\n", event, date1, date2, time2 - time1);
+    } else {
+        printf("Performances manquantes pour comparer les dates spécifiées.\n");
     }
+}
+
+void calculate_statistics(const Athlete *athlete, const char *event) {
+    float best_time = FLT_MAX;
+    float worst_time = 0;
+    float total_time = 0;
+    int count = 0;
+
+    for (int i = 0; i < athlete->performance_count; i++) {
+        if (strcmp(athlete->performances[i].epreuve, event) == 0) {
+            float time = athlete->performances[i].time;
+            if (time < best_time) best_time = time;
+            if (time > worst_time) worst_time = time;
+            total_time += time;
+            count++;
+        }
+    }
+
+    if (count > 0) {
+        printf("Meilleur temps pour %s: %.2f\n", event, best_time);
+        printf("Pire temps pour %s: %.2f\n", event, worst_time);
+        printf("Temps moyen pour %s: %.2f\n", event, total_time / count);
+    } else {
+        printf("Aucune performance trouvée pour l'épreuve %s.\n", event);
+    }
+}
+
+void find_top_athletes(const Athlete athletes[], int athlete_count, const char *event) {
+    Athlete *top_athletes[3] = {NULL, NULL, NULL};
+    float top_times[3] = {FLT_MAX, FLT_MAX, FLT_MAX};
 
     for (int i = 0; i < athlete_count; i++) {
+        float total_time = 0;
+        int count = 0;
+
         for (int j = 0; j < athletes[i].performance_count; j++) {
-            for (size_t k = 0; k < num_event_types; k++) {
-                if (strcmp(athletes[i].performances[j].epreuve, event_types[k]) == 0) {
-                    if (best_athletes[k] == NULL || athletes[i].performances[j].time < best_performances[k].time) {
-                        best_performances[k] = athletes[i].performances[j];
-                        best_athletes[k] = &athletes[i];
+            if (strcmp(athletes[i].performances[j].epreuve, event) == 0) {
+                total_time += athletes[i].performances[j].time;
+                count++;
+            }
+        }
+
+        if (count > 0) {
+            float avg_time = total_time / count;
+
+            for (int k = 0; k < 3; k++) {
+                if (avg_time < top_times[k]) {
+                    for (int l = 2; l > k; l--) {
+                        top_times[l] = top_times[l - 1];
+                        top_athletes[l] = top_athletes[l - 1];
                     }
+                    top_times[k] = avg_time;
+                    top_athletes[k] = &athletes[i];
+                    break;
                 }
             }
         }
     }
 
-    printf(CYAN "\n=====================================\n"RESET);
-    centerText(" Meilleurs Performeurs\n");
-    printf(CYAN "=====================================\n"RESET);
-    for (size_t i = 0; i < num_event_types; i++) {
-        if (best_athletes[i] != NULL) {
-            printf("Meilleur performeur pour %s: %s\n\n", event_types[i], best_athletes[i]->name);
-            printf("Meilleure performance:\n %s, %s, %.2f, Position: %d\n\n",
-                   best_performances[i].date, best_performances[i].epreuve, best_performances[i].time, best_performances[i].relay_position);
-        } else {
-            printf("Aucune performance pour %s.\n\n", event_types[i]);
-        }
+    printf("Les trois meilleurs athlètes pour %s:\n", event);
+    for (int i = 0; i < 3 && top_athletes[i] != NULL; i++) {
+        printf("%d. %s avec un temps moyen de %.2f\n", i + 1, top_athletes[i]->name, top_times[i]);
     }
 }
 
+
+void system_clear(){// Pour effacer la console
+printf("Appuyer sur la touche entrée pour continuer...\n");
+int c;
+while ((c = getchar()) != '\n' && c != EOF);
+system("pause");
+system("clear");
+}
 
 #endif
