@@ -1,5 +1,4 @@
 
-
 # CER-J-O Management
 
 **CER-J-O Management** est un programme codé en langage C qui permet à un entraîneur de consulter et analyser les performances de ses athlètes. L'entraîneur pourra notamment saisir de nouvelles performances et les analyser grâce à des outils de statistiques avancées.
@@ -69,15 +68,22 @@ Pour compiler et lancer le projet, utiliser ceci dans votre terminal :
 6. **Comparer les performances**
   - Sélectionnez l'option pour comparer les performances, entrez le nom de l'athlète, l'épreuve et les deux dates à comparer.
    
-## Images
+## Fichiers
 
-<img width="455" alt="Capture d’écran 2024-05-26 à 03 15 52" src="https://github.com/jkengineer42/CER-J-OManagement/assets/167258198/86d56cfd-8e5c-44c0-bf2a-eecf7ed11f3f">
+**Voici une explication des fichiers liée à un athlète :**
+
+<img width="328" alt="Capture d’écran 2024-05-26 à 03 25 41" src="https://github.com/jkengineer42/CER-J-OManagement/assets/167258198/7c14f8b5-9370-4a25-894f-9465c5a8591d">
 
 
+    1. La première ligne représente le nom de l'athlète.
 
+    2. La deuxième ligne représente le nombre de performances enregistrées
+
+    3. Les lignes suivantes représente les caractérisitque des performances, respectivement : 
+    La date de la performance, le type d'épreuve, le temps en secondes, et enfin la position du relais, si l'épreuve n'est pas un relais, alors 0 est écrit.
 ## Erreurs
 
-Voici une liste d'erreurs, prenez en compte avant le lancement du programme pour être avertis des provlèmes que vous allez sûrement rencontrer.
+Voici une liste d'erreurs lors de l'utilisation du programme, prenez en compte avant le lancement du programme pour être avertis des problèmes que vous allez sûrement rencontrer.
 ## Auteurs
 
 - [@KUGANESAN Arun](https://www.github.com/)
