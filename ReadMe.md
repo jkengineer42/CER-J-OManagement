@@ -96,7 +96,7 @@ Les fichiers fournis sont :
 Ces fichiers doivent être placés dans le même répertoire que l'exécutable main ou dans un répertoire spécifié par votre code. Ils seront automatiquement chargés lorsque vous exécuterez le programme.
 ## Erreurs
 
-Voici une liste d'erreurs lors de l'utilisation du programme, prenez en compte avant le lancement du programme pour être avertis des problèmes que vous allez sûrement rencontrer.
+Des erreurs peuvent survenir lors de l'utilisation du programme, prenez en compte avant le lancement du programme.
 ## Auteurs
 
 - [@KUGANESAN Arun](https://www.github.com/)
