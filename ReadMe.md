@@ -34,7 +34,7 @@ Pour compiler et lancer le projet, utiliser ceci dans votre terminal :
   - Rechercher les statistiques des athlètes par nom, date ou type d'épreuve.
 
 4. **Afficher l'historique des performances d'un athlète**
-   - Affiche l'historique complet des performances pour un athlète donné.
+  - Affiche l'historique complet des performances pour un athlète donné.
 
 5. **Comparer les performances d'un athlète entre deux dates**
   - Compare et affiche la différence de performance d'un athlète entre deux dates spécifiées pour une épreuve donnée.
@@ -81,6 +81,19 @@ Pour compiler et lancer le projet, utiliser ceci dans votre terminal :
 
     3. Les lignes suivantes représente les caractérisitque des performances, respectivement : 
     La date de la performance, le type d'épreuve, le temps en secondes, et enfin la position du relais, si l'épreuve n'est pas un relais, alors 0 est écrit.
+
+## Données de Démonstration
+
+Pour vous aider à démarrer et à faire une démonstration, nous fournissons quatre fichiers d'athlètes avec des performances déjà pré-remplies. Ces fichiers vous permettront d'avoir des données réelles à analyser immédiatement.
+
+Les fichiers fournis sont :
+
+1. **lorenzo.txt** : Contient les performances de l'athlète Lorenzo Patta.
+2. **leonardo.txt** : Contient les performances de l'athlète Leonardo Bonucci.
+3. **fabrizio.txt** : Contient les performances de l'athlète Fabrizio Donato.
+4. **marco.txt** : Contient les performances de l'athlète Marco Vaccari.
+
+Ces fichiers doivent être placés dans le même répertoire que l'exécutable main ou dans un répertoire spécifié par votre code. Ils seront automatiquement chargés lorsque vous exécuterez le programme.
 ## Erreurs
 
 Voici une liste d'erreurs lors de l'utilisation du programme, prenez en compte avant le lancement du programme pour être avertis des problèmes que vous allez sûrement rencontrer.
